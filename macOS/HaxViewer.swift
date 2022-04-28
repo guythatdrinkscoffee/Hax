@@ -8,24 +8,41 @@
 import SwiftUI
 
 enum HaxDestination: CaseIterable{
+    case topStories
     case bestStories
 }
 
 struct HaxViewer: View {
-    @State var destinationSelection: HaxDestination? = .bestStories
+    @State var selection: HaxDestination? = .bestStories
+    @ObservedObject var bestStoriesViewModel = BestStoriesViewModel()
+    @ObservedObject var topStoriesViewModel = TopStoriesViewModel()
     
     var sideBar: some View {
-        List(selection: $destinationSelection) {
-            NavigationLink(
-                destination: BestStoriesView(), tag: HaxDestination.bestStories, selection: $destinationSelection) {
-                    Label("Best Stories", systemImage: "newspaper")
+        List(selection: $selection) {
+            Section("STORIES"){
+                NavigationLink(
+                    destination: StoriesView(currentState: $topStoriesViewModel.currentState, stories: topStoriesViewModel.stories),
+                    tag: HaxDestination.topStories,
+                    selection: $selection
+                ){
+                    Label("Top Stories", systemImage: "star")
                 }
+             
+                NavigationLink(
+                    destination: StoriesView(currentState: $bestStoriesViewModel.currentState, stories: bestStoriesViewModel.stories),
+                    tag: HaxDestination.bestStories,
+                    selection: $selection) {
+                        Label("Best Stories", systemImage: "newspaper")
+                    }
+            }
         }
     }
     
     var body: some View {
         NavigationView {
             sideBar
+            Text("Select a Category")
+            Text("Select a Story")
         }
         .frame(
           minWidth: 700,

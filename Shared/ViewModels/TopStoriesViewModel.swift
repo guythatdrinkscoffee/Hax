@@ -1,5 +1,5 @@
 //
-//  BestStoriesViewModel.swift
+//  TopStoriesViewModel.swift
 //  Hax
 //
 //  Created by J Manuel Zaragoza on 4/27/22.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class BestStoriesViewModel: ObservableObject {
+class TopStoriesViewModel: ObservableObject {
     //MARK: - Properties
     @Published var stories: [Story] = []
     @Published var currentState: LoadingState = .loading
@@ -16,14 +16,14 @@ class BestStoriesViewModel: ObservableObject {
     private var api: API
     private var subs = Set<AnyCancellable>()
     private var allStoryIds: [Int] = []
-    private var maxStories = 20
+    private var maxStories = 30
     private var bestStoriesSub: AnyCancellable?
     
     //MARK: - Lifecycle
     init() {
         api = API()
         
-        api.storyIdsForCategory(category: .bestStories)
+        api.storyIdsForCategory(category: .topStories)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { _ in
                 self.fetch()
@@ -58,7 +58,7 @@ class BestStoriesViewModel: ObservableObject {
     }
 }
 
-extension BestStoriesViewModel: StoriesFetcher {
+extension TopStoriesViewModel: StoriesFetcher {
     func fetch() {
         let range = getAvailableRange()
         
@@ -80,9 +80,4 @@ extension BestStoriesViewModel: StoriesFetcher {
             }
         }
     }
-}
-
-protocol StoriesFetcher: AnyObject {
-    func fetch()
-    func cancel()
 }

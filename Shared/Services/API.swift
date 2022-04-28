@@ -8,25 +8,31 @@
 import Foundation
 import Combine
 
-struct API {
-    var task: AnyCancellable?
+enum Endpoints {
+    static let baseURL = URL(string: "https://hacker-news.firebaseio.com/v0")!
     
-    enum Endpoints {
-        static let baseURL = URL(string: "https://hacker-news.firebaseio.com/v0")!
-        
-        case item(id: Int)
-        case bestStories
-        
-        var url: URL {
-            switch self {
-            case .item(let id):
-                return Endpoints.baseURL.appendingPathComponent("item/\(id).json")
-            case .bestStories:
-                return Endpoints.baseURL.appendingPathComponent("beststories.json")
-            }
+    case item(id: Int)
+    case bestStories
+    case topStories
+    case newStories
+    
+    var url: URL {
+        switch self {
+        case .item(let id):
+            return Endpoints.baseURL.appendingPathComponent("item/\(id).json")
+        case .bestStories:
+            return Endpoints.baseURL.appendingPathComponent("beststories.json")
+        case .topStories:
+            return Endpoints.baseURL.appendingPathComponent("topstories.json")
+        case .newStories:
+            return Endpoints.baseURL.appendingPathComponent("newstories.json")
         }
     }
-    
+}
+
+struct API {
+    var task: AnyCancellable?
+
     private let decoder = JSONDecoder()
     private let privateQueue = DispatchQueue(label: "HackerNewsAPI", qos: .default, attributes: .concurrent)
     
@@ -50,7 +56,7 @@ struct API {
         }
     }
     
-    public func bestStories(in range: [Int]) -> AnyPublisher<[Story], Error> {
+    public func fetchStories(in range: [Int]) -> AnyPublisher<[Story], Error> {
         range
             .publisher
             .collect()
@@ -66,13 +72,61 @@ struct API {
             .eraseToAnyPublisher()
     }
     
-    public func bestStoriesIDs() -> AnyPublisher<[Int], Error> {
-        URLSession.shared
-            .dataTaskPublisher(for: Endpoints.bestStories.url)
+    public func storyIdsForCategory(category: HaxDestination) -> AnyPublisher<[Int], Error> {
+        let endpoint: Endpoints
+        
+        switch category {
+        case .topStories:
+            endpoint = Endpoints.topStories
+        case .bestStories:
+            endpoint = Endpoints.bestStories
+        
+        }
+        
+        return  URLSession.shared
+            .dataTaskPublisher(for:  endpoint.url)
             .map(\.data)
             .receive(on: privateQueue)
             .decode(type: [Int].self, decoder: decoder)
             .filter({!$0.isEmpty})
+            .eraseToAnyPublisher()
+    }
+    
+    private func fetchCommentByID(id: Int) -> AnyPublisher<Comment, Error> {
+        URLSession.shared
+            .dataTaskPublisher(for: Endpoints.item(id: id).url)
+            .receive(on: privateQueue)
+            .map(\.data)
+            .decode(type: Comment.self, decoder: decoder)
+            .eraseToAnyPublisher()
+    }
+    
+    private func fetchComments(ids: [Int]) -> AnyPublisher<Comment, Error>{
+        let publisherForFirstComment = fetchCommentByID(id: ids.first!)
+        let remainingComments = Array(ids.dropFirst())
+        
+        return remainingComments.reduce(publisherForFirstComment) { results, nextCommentId in
+            results
+                .merge(with: fetchCommentByID(id: nextCommentId))
+                .eraseToAnyPublisher()
+        }
+    }
+    
+    public func fetchComments(with ids: [Int]) -> AnyPublisher<[Comment],Error>{
+        ids.publisher
+            .collect()
+            .filter({!$0.isEmpty})
+            .flatMap { ids in
+                return self.fetchComments(ids: ids)
+            }
+            .scan([]) { results, comment -> [Comment] in
+                if comment.author.isEmpty || comment.text.isEmpty {
+                    return results
+                }
+                
+                return results + [comment]
+            }
+            .map({ $0.sorted() })
             .eraseToAnyPublisher()
     }
 }
