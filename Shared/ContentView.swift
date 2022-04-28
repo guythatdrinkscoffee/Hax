@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ContentView: View {
+    @State var subs: Set<AnyCancellable> = []
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        HaxViewer()
     }
 }
 
