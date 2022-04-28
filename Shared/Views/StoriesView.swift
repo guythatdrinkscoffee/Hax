@@ -21,6 +21,7 @@ struct StoriesView: View {
                     ProgressView()
                         .progressViewStyle(.circular)
                 }
+                
                 .frame(maxWidth: .infinity,maxHeight:.infinity, alignment: .center)
             } else {
                 ForEach(Array(zip(stories.indices, stories)), id: \.1) { index , story in
@@ -34,9 +35,11 @@ struct StoriesView: View {
                 }
             }
         }
-        .listStyle(.plain)
+#if os(macOS)
         .frame(minWidth:520)
-        .navigationTitle(navigationTitle)
+#endif
+        .listStyle(.plain)
+//        .navigationTitle(navigationTitle)
         .onDisappear {
             if currentState == .loading {
                 currentState = .cancel
@@ -45,11 +48,14 @@ struct StoriesView: View {
     }
     
     var navigationTitle: String {
+    #if os(macOS)
         if let selectedStory = selectedStory {
             return "\(selectedStory.title)"
         }
-        return "Hax - Best Stories"
+    #endif
+        return ""
     }
+    
 }
 
 //struct BestStoriesView_Previews: PreviewProvider {
@@ -67,14 +73,17 @@ struct StoryRow: View {
     var body: some View {
         VStack {
             HStack{
+                
                 Text("\(index).")
                     .foregroundColor(.gray)
                     .font(.headline)
+                
                 Text(story.title)
                     .font(.title3)
-                    .minimumScaleFactor(0.5)
+                    .minimumScaleFactor(0.2)
                     .lineLimit(4)
                     .multilineTextAlignment(.leading)
+                
                 Spacer()
             }
             
@@ -83,16 +92,29 @@ struct StoryRow: View {
             HStack{
                 if let url = story.url {
                     Link(url.host ?? " ", destination: url)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading,20)
+                    #if os(iOS)
+                        .padding([.top,.bottom], 10)
+                    #endif
                 }
+                #if os(macOS)
                 Spacer()
+                #endif
             }
             
             HStack{
-                StoryInfo(story: story, showUrl: false)
+                #if os(macOS)
+                StoryInfo(story: story, showUrl: false,showTime: true)
                 Spacer()
+                #else
+                StoryInfo(story: story, showUrl: false, showTime: false)
+                #endif
             }
-           
+            
+            #if os(macOS)
             Divider()
+            #endif
         }
     }
 }
@@ -100,27 +122,32 @@ struct StoryRow: View {
 struct StoryInfo: View {
     var story: Story
     var showUrl: Bool
+    var showTime: Bool
     
     var body: some View {
         HStack {
             Label("\(story.score)", systemImage: "arrow.up")
             Label("\(story.author)", systemImage: "person")
-            Label("\(story.relativeTimeText)", systemImage: "clock.arrow.circlepath")
-            Label("\(story.comments.count) comments", systemImage: "text.bubble")
+            Label("\(story.comments.count)", systemImage: "text.bubble")
+            if showTime {
+                Label("\(story.relativeTimeText)", systemImage: "clock.arrow.circlepath")
+            }
             
             if showUrl {
                 if let storyURL = story.url {
                     Link(storyURL.host ?? " ", destination: storyURL)
                         .onHover { inside in
+                            #if os(macOS)
                             if inside {
                                 NSCursor.pointingHand.push()
                             } else {
                                 NSCursor.pop()
                             }
+                            #endif
                         }
                 }
             }
-          
+            
         }
     }
 }

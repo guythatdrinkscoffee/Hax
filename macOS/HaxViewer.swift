@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-enum HaxDestination: CaseIterable{
-    case topStories
-    case bestStories
-}
-
 struct HaxViewer: View {
     @State var selection: HaxDestination? = .bestStories
     @ObservedObject var bestStoriesViewModel = BestStoriesViewModel()

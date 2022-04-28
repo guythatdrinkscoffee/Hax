@@ -45,7 +45,8 @@ struct Story: Codable, Comparable, Hashable {
         formatter.locale = Locale.current
         formatter.calendar = Calendar.current
         formatter.dateTimeStyle = .numeric
-        
+        formatter.unitsStyle = .abbreviated
+        formatter.formattingContext = .listItem
         return formatter.localizedString(for: date, relativeTo: Date())
     }
     

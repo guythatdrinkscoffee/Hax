@@ -11,6 +11,9 @@
 		BE46E74B281A428400A3D84E /* StoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46E749281A428400A3D84E /* StoryViewModel.swift */; };
 		BE46E74D281A63A500A3D84E /* TopStoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46E74C281A63A500A3D84E /* TopStoriesViewModel.swift */; };
 		BE46E74E281A63A500A3D84E /* TopStoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46E74C281A63A500A3D84E /* TopStoriesViewModel.swift */; };
+		BE46E753281A68F900A3D84E /* HaxViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46E750281A68B200A3D84E /* HaxViewer.swift */; };
+		BE46E755281A6A6100A3D84E /* HaxDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46E754281A6A6100A3D84E /* HaxDestination.swift */; };
+		BE46E756281A6A6100A3D84E /* HaxDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE46E754281A6A6100A3D84E /* HaxDestination.swift */; };
 		BE519A4A2819CE14004A8BC9 /* HaxApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE519A3A2819CE14004A8BC9 /* HaxApp.swift */; };
 		BE519A4B2819CE14004A8BC9 /* HaxApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE519A3A2819CE14004A8BC9 /* HaxApp.swift */; };
 		BE519A4C2819CE14004A8BC9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE519A3B2819CE14004A8BC9 /* ContentView.swift */; };
@@ -23,7 +26,6 @@
 		BE519A5E2819D30A004A8BC9 /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE519A5C2819D30A004A8BC9 /* Story.swift */; };
 		BE519A622819DA4E004A8BC9 /* BestStoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE519A612819DA4E004A8BC9 /* BestStoriesViewModel.swift */; };
 		BE519A632819DA4E004A8BC9 /* BestStoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE519A612819DA4E004A8BC9 /* BestStoriesViewModel.swift */; };
-		BE519A652819DDB8004A8BC9 /* HaxViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE519A642819DDB8004A8BC9 /* HaxViewer.swift */; };
 		BE519A662819DDB8004A8BC9 /* HaxViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE519A642819DDB8004A8BC9 /* HaxViewer.swift */; };
 		BE519A692819DF00004A8BC9 /* StoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE519A682819DF00004A8BC9 /* StoriesView.swift */; };
 		BE519A6A2819DF00004A8BC9 /* StoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE519A682819DF00004A8BC9 /* StoriesView.swift */; };
@@ -36,6 +38,8 @@
 /* Begin PBXFileReference section */
 		BE46E749281A428400A3D84E /* StoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryViewModel.swift; sourceTree = "<group>"; };
 		BE46E74C281A63A500A3D84E /* TopStoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopStoriesViewModel.swift; sourceTree = "<group>"; };
+		BE46E750281A68B200A3D84E /* HaxViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaxViewer.swift; sourceTree = "<group>"; };
+		BE46E754281A6A6100A3D84E /* HaxDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaxDestination.swift; sourceTree = "<group>"; };
 		BE519A3A2819CE14004A8BC9 /* HaxApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HaxApp.swift; sourceTree = "<group>"; };
 		BE519A3B2819CE14004A8BC9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BE519A3C2819CE14004A8BC9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -69,9 +73,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BE46E74F281A689200A3D84E /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				BE46E750281A68B200A3D84E /* HaxViewer.swift */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
 		BE519A342819CE14004A8BC9 = {
 			isa = PBXGroup;
 			children = (
+				BE46E74F281A689200A3D84E /* iOS */,
 				BE519A392819CE14004A8BC9 /* Shared */,
 				BE519A482819CE14004A8BC9 /* macOS */,
 				BE519A422819CE14004A8BC9 /* Products */,
@@ -123,6 +136,7 @@
 			children = (
 				BE519A5C2819D30A004A8BC9 /* Story.swift */,
 				BED5F928281A2195007775C0 /* Comment.swift */,
+				BE46E754281A6A6100A3D84E /* HaxDestination.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -250,8 +264,9 @@
 				BE519A4A2819CE14004A8BC9 /* HaxApp.swift in Sources */,
 				BE519A622819DA4E004A8BC9 /* BestStoriesViewModel.swift in Sources */,
 				BE519A5D2819D30A004A8BC9 /* Story.swift in Sources */,
+				BE46E755281A6A6100A3D84E /* HaxDestination.swift in Sources */,
+				BE46E753281A68F900A3D84E /* HaxViewer.swift in Sources */,
 				BE46E74D281A63A500A3D84E /* TopStoriesViewModel.swift in Sources */,
-				BE519A652819DDB8004A8BC9 /* HaxViewer.swift in Sources */,
 				BED5F929281A2195007775C0 /* Comment.swift in Sources */,
 				BE46E74A281A428400A3D84E /* StoryViewModel.swift in Sources */,
 				BED5F926281A1666007775C0 /* StoryDetailView.swift in Sources */,
@@ -268,6 +283,7 @@
 				BE519A4B2819CE14004A8BC9 /* HaxApp.swift in Sources */,
 				BE519A632819DA4E004A8BC9 /* BestStoriesViewModel.swift in Sources */,
 				BE519A5E2819D30A004A8BC9 /* Story.swift in Sources */,
+				BE46E756281A6A6100A3D84E /* HaxDestination.swift in Sources */,
 				BE46E74E281A63A500A3D84E /* TopStoriesViewModel.swift in Sources */,
 				BE519A662819DDB8004A8BC9 /* HaxViewer.swift in Sources */,
 				BED5F92A281A2195007775C0 /* Comment.swift in Sources */,

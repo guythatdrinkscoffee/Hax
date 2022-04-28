@@ -8,9 +8,7 @@
 import SwiftUI
 import Combine
 
-struct ContentView: View {
-    @State var subs: Set<AnyCancellable> = []
-    
+struct ContentView: View {    
     var body: some View {
         HaxViewer()
     }

@@ -14,13 +14,25 @@ struct StoryDetailView: View {
     
     var body: some View {
         VStack {
+            #if os(iOS)
+            HStack{
+               Spacer()
+               Label(story.relativeTimeText, systemImage: "clock.arrow.circlepath")
+                    .padding(.trailing, 5)
+            }
+            #endif
+            
             Text(story.title)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .font(.title2)
                 .padding()
             HStack {
                 Spacer()
-                StoryInfo(story: story, showUrl: true)
+                #if os(macOS)
+                  StoryInfo(story: story, showUrl: true, showTime: true)
+                #else
+                  StoryInfo(story: story, showUrl: false, showTime: false)
+                #endif
                 Spacer()
             }
             
@@ -45,6 +57,7 @@ struct StoryDetailView: View {
             storyViewModel.cancelFetch()
         }
     }
+    
 }
 
 struct StoryDetailView_Previews: PreviewProvider {
@@ -89,7 +102,10 @@ struct CommentRow: View {
                 .minimumScaleFactor(0.5)
                 .multilineTextAlignment(.leading)
                 .foregroundColor(.primary)
+            
+            #if os(macOS)
             Divider()
+            #endif
         }
     }
 }
